@@ -81,18 +81,18 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
       </div>
 
       {/* Budget + Duration + Travelers row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="space-y-3">
           <label htmlFor="budget" className="block text-xs font-semibold text-text-muted uppercase tracking-widest">
             Budget
           </label>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 overflow-hidden">
             <select
               id="currency"
               value={currency}
               onChange={e => setCurrency(e.target.value)}
               aria-label="Currency"
-              className="px-3 py-4 rounded-2xl bg-surface-light border border-border focus:border-primary outline-none text-sm font-medium"
+              className="w-24 shrink-0 px-2 py-4 rounded-2xl bg-surface-light border border-border focus:border-primary outline-none text-sm font-medium"
             >
               <option value="INR">₹ INR</option>
               <option value="USD">$ USD</option>
@@ -105,7 +105,7 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
               value={budget}
               onChange={e => setBudget(Number(e.target.value))}
               min={500}
-              className="flex-1 px-4 py-4 rounded-2xl bg-surface-light border border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all"
+              className="flex-1 min-w-0 px-4 py-4 rounded-2xl bg-surface-light border border-border focus:border-primary focus:ring-2 focus:ring-primary/30 outline-none transition-all"
             />
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
           <label htmlFor="duration" className="block text-xs font-semibold text-text-muted uppercase tracking-widest">
             Duration
           </label>
-          <div className="flex items-center gap-4 bg-surface-light border border-border rounded-2xl px-4 py-3.5">
+          <div className="flex items-center gap-4 bg-surface-light border border-border rounded-2xl px-4 py-3.5 overflow-hidden">
             <input
               id="duration"
               type="range"
@@ -122,9 +122,9 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
               max={14}
               value={duration}
               onChange={e => setDuration(Number(e.target.value))}
-              className="flex-1 accent-primary"
+              className="flex-1 accent-primary min-w-0"
             />
-            <span className="text-xl font-bold text-primary min-w-[3ch] text-center">{duration}<span className="text-xs font-normal text-text-muted ml-0.5">d</span></span>
+            <span className="text-xl font-bold text-primary min-w-[3ch] text-center shrink-0">{duration}<span className="text-xs font-normal text-text-muted ml-0.5">d</span></span>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
           <label htmlFor="travelers" className="block text-xs font-semibold text-text-muted uppercase tracking-widest">
             Travelers
           </label>
-          <div className="flex items-center gap-4 bg-surface-light border border-border rounded-2xl px-4 py-3.5">
+          <div className="flex items-center gap-4 bg-surface-light border border-border rounded-2xl px-4 py-3.5 overflow-hidden">
             <input
               id="travelers"
               type="range"
@@ -140,9 +140,9 @@ export default function TripSetupForm({ onSubmit }: TripSetupFormProps) {
               max={10}
               value={travelers}
               onChange={e => setTravelers(Number(e.target.value))}
-              className="flex-1 accent-primary"
+              className="flex-1 accent-primary min-w-0"
             />
-            <span className="text-xl font-bold text-primary min-w-[3ch] text-center">{travelers}<span className="text-xs font-normal text-text-muted ml-0.5">👤</span></span>
+            <span className="text-xl font-bold text-primary min-w-[3ch] text-center shrink-0">{travelers}<span className="text-xs font-normal text-text-muted ml-0.5">👤</span></span>
           </div>
         </div>
       </div>

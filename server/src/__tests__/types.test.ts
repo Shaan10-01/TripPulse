@@ -48,4 +48,19 @@ describe('buildConstraintString', () => {
     const lines = result.split('\n');
     expect(lines).toHaveLength(7);
   });
+
+  it('should return a single line when only one constraint is active', () => {
+    const constraints: TripConstraints = {
+      avoidCrowds: false,
+      budgetSensitive: true,
+      wheelchairFriendly: false,
+      rainSafe: false,
+      familyFriendly: false,
+      adventureHeavy: false,
+      vegetarianOnly: false,
+    };
+    const result = buildConstraintString(constraints);
+    expect(result).toBe('Prioritize budget-friendly options');
+    expect(result.split('\n')).toHaveLength(1);
+  });
 });

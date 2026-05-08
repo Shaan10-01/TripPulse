@@ -60,7 +60,7 @@ export async function callGemini(systemPrompt: string, userPrompt: string, retri
 /**
  * Strip markdown fences and other non-JSON wrapper text that models sometimes add.
  */
-function sanitizeJsonResponse(raw: string): string {
+export function sanitizeJsonResponse(raw: string): string {
   let cleaned = raw.trim();
 
   // Remove ```json ... ``` wrappers

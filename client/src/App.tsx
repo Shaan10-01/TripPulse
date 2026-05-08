@@ -8,9 +8,16 @@ import ItineraryView from './components/ItineraryView';
 import DisruptionPanel from './components/DisruptionPanel';
 import BudgetPanel from './components/BudgetPanel';
 import LoadingOverlay from './components/LoadingOverlay';
+import ErrorBoundary from './components/ErrorBoundary';
 
+/** Application display phases */
 type AppPhase = 'setup' | 'loading' | 'itinerary';
 
+/**
+ * Root application component.
+ * Manages the three-phase flow: Setup → Loading → Itinerary.
+ * Handles itinerary generation, disruption replanning, and budget tracking.
+ */
 export default function App() {
   const [phase, setPhase] = useState<AppPhase>('setup');
   const [tripSetup, setTripSetup] = useState<TripSetup | null>(null);
@@ -20,6 +27,7 @@ export default function App() {
   const [loadingMsg, setLoadingMsg] = useState('Generating your itinerary...');
   const [previousItinerary, setPreviousItinerary] = useState<Itinerary | null>(null);
 
+  /** Generate a new itinerary from user preferences */
   const handleGenerate = async (setup: TripSetup) => {
     setTripSetup(setup);
     setOriginalBudget(setup.budget);
@@ -38,6 +46,7 @@ export default function App() {
     }
   };
 
+  /** Handle a disruption event — triggers AI replanning */
   const handleDisruption = async (disruption: Disruption, affectedDay?: number) => {
     if (!itinerary || !tripSetup) return;
     setLoadingMsg(`⚡ Replanning for: ${disruption.label}...`);
@@ -60,6 +69,7 @@ export default function App() {
     }
   };
 
+  /** Reset to the setup phase */
   const handleReset = () => {
     setPhase('setup');
     setItinerary(null);
@@ -68,6 +78,7 @@ export default function App() {
     setError(null);
   };
 
+  /** Compute budget summary from current itinerary state */
   const budget: BudgetSummary | null = itinerary
     ? {
         originalBudget,
@@ -78,43 +89,46 @@ export default function App() {
     : null;
 
   return (
-    <div className="min-h-screen bg-surface">
-      <Header onReset={phase === 'itinerary' ? handleReset : undefined} />
+    <ErrorBoundary>
+      <div className="min-h-screen bg-surface">
+        <Header onReset={phase === 'itinerary' ? handleReset : undefined} />
 
-      {error && (
-        <div
-          role="alert"
-          className="mx-auto max-w-4xl mt-4 px-4 py-3 bg-danger/10 border border-danger/30 rounded-xl text-danger text-sm"
-        >
-          ⚠️ {error}
-        </div>
-      )}
-
-      {phase === 'loading' && <LoadingOverlay message={loadingMsg} />}
-
-      {phase === 'setup' && (
-        <main className="mx-auto max-w-3xl px-4 py-8">
-          <TripSetupForm onSubmit={handleGenerate} />
-        </main>
-      )}
-
-      {phase === 'itinerary' && itinerary && (
-        <main className="mx-auto max-w-6xl px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
-          <div className="space-y-6">
-            <ItineraryView
-              itinerary={itinerary}
-              previousItinerary={previousItinerary}
-            />
+        {error && (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="mx-auto max-w-4xl mt-4 px-4 py-3 bg-danger/10 border border-danger/30 rounded-xl text-danger text-sm"
+          >
+            ⚠️ {error}
           </div>
-          <aside className="space-y-6">
-            {budget && <BudgetPanel budget={budget} />}
-            <DisruptionPanel
-              onDisrupt={handleDisruption}
-              totalDays={itinerary.totalDays}
-            />
-          </aside>
-        </main>
-      )}
-    </div>
+        )}
+
+        {phase === 'loading' && <LoadingOverlay message={loadingMsg} />}
+
+        {phase === 'setup' && (
+          <main id="main-content" className="mx-auto max-w-3xl px-4 py-8">
+            <TripSetupForm onSubmit={handleGenerate} />
+          </main>
+        )}
+
+        {phase === 'itinerary' && itinerary && (
+          <main id="main-content" className="mx-auto max-w-6xl px-4 py-8 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
+            <div className="space-y-6">
+              <ItineraryView
+                itinerary={itinerary}
+                previousItinerary={previousItinerary}
+              />
+            </div>
+            <aside className="space-y-6" aria-label="Trip tools">
+              {budget && <BudgetPanel budget={budget} />}
+              <DisruptionPanel
+                onDisrupt={handleDisruption}
+                totalDays={itinerary.totalDays}
+              />
+            </aside>
+          </main>
+        )}
+      </div>
+    </ErrorBoundary>
   );
 }

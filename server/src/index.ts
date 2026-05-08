@@ -18,7 +18,16 @@ const PORT = process.env.PORT || 3001;
 // ─── Security Middleware ────────────────────────────────────────────────
 /** Helmet sets secure HTTP headers (XSS, clickjacking, MIME sniffing protection) */
 app.use(helmet({
-  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://maps.googleapis.com"],
+    },
+  },
 }));
 
 /** CORS configuration — restrict origins in production */

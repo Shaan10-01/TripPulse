@@ -102,11 +102,14 @@ This creates **believable adaptive intelligence** — the AI preserves what work
 - **⚡ Surgical Replanning** — Only affected sections are regenerated
 - **💰 Live Budget Tracking** — Cost recalculated after every disruption
 - **📍 Google Maps Integration** — Every activity links to its location on Maps
-- **♿ Accessible** — ARIA labels, keyboard navigation, semantic HTML, role attributes
-- **📱 Responsive** — Mobile-first layout
+- **🔒 Security Hardened** — Helmet.js (CSP, XSS, clickjacking), rate limiting, input validation, XSS sanitization
+- **♿ Accessible** — Skip navigation, ARIA labels, keyboard navigation, semantic HTML, role attributes, aria-live regions
+- **📱 Responsive** — Mobile-first layout with proper overflow handling
 - **🔄 Retry Logic** — Gemini calls retry with JSON sanitization for stability
 - **📊 Structured Logging** — Timestamped server logs for observability
-- **✅ Tested** — Unit tests with Vitest
+- **✅ 25 Tests** — Validation, sanitization, and constraint logic with Vitest
+- **🛡️ Error Boundary** — Graceful UI failure recovery (no white screens)
+- **⚙️ Efficient** — Gzip compression, static asset caching, optimized builds
 
 ## Tech Stack
 
@@ -114,9 +117,11 @@ This creates **believable adaptive intelligence** — the AI preserves what work
 |-------|-----------|
 | Frontend | React, Vite, TypeScript, Tailwind CSS v4 |
 | Backend | Node.js, Express, TypeScript |
+| Security | Helmet.js, express-rate-limit, input validation middleware |
+| Performance | compression, static caching, optimized Docker builds |
 | AI | Google Gemini 2.5 Flash (structured JSON mode) |
 | Deployment | Docker, Cloud Run, Cloud Build |
-| Testing | Vitest |
+| Testing | Vitest (25 tests across 3 suites) |
 
 ## Setup Instructions
 
